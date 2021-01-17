@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Userapp;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $userCount = Userapp::count();
+        //return View::make('home')->with('userCount',$userCount);
+        return view('home')->with('userCount',$userCount);
     }
 }

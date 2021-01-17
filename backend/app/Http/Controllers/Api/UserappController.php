@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Userapp;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class UserappController extends Controller
 {
     public function login(Request $requset){
         // dd($requset->all());die();
-        $user = User::where('email', $requset->email)->first();
+        $user = Userapp::where('email', $requset->email)->first();
 
         if($user){
             if(password_verify($requset->password, $user->password)){
@@ -46,7 +46,7 @@ class UserController extends Controller
             return $this->error($val[0]);
         }
 
-        $user = User::create(array_merge($requset->all(), [
+        $user = Userapp::create(array_merge($requset->all(), [
             'password' => bcrypt($requset->password)
         ]));
 

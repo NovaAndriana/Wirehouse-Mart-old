@@ -16,7 +16,17 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+//edit data
+//Route::get('edit','ProdukController@edit')->name('edit');
+//update data
+//Route::POST('update','ProdukController@update')->name('update');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/exportproduk', 'ProdukController@produkexport')->name('exportproduk');
+Route::post('/importproduk','ProdukController@produkimport')->name('importproduk');
+//Route::get('/dropdownlistbrand', 'ProdukController@getBrands');
+
 Route::resource('/user', 'UserController');
 Route::resource('/produk', 'ProdukController');
+Route::resource('/brand', 'BrandController');

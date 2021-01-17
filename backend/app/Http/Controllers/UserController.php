@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Userapp;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user['listUser'] = User::all();
+        $user['listUser'] = Userapp::all();
         return view('user')->with($user);
     }
 
