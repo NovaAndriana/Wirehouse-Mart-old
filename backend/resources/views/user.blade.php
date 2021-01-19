@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Table User</h1>
+            <h1 class="m-0 text-dark">User Data</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
 
         <div class="card">
             <div class="card-header">
-            <h3 class="card-title">Striped Full Width Table</h3>
+            <h3 class="card-title">Data User Mobile Apps</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">

@@ -52,9 +52,19 @@
                       <div class="form-group">
                         <label>Pilih Satuan</label>
                         <select class="form-control" name="satuan">
-                          <option value="{{$produk->satuan}}">{{$produk->satuan}}</option>
+                          <!-- <option value="{{$produk->satuan}}">{{$produk->satuan}}</option>
                           <option value="GROSS">GROSS</option>
-                          <option value="GROSS">LUSIN</option>
+                          <option value="GROSS">LUSIN</option> -->
+                          @foreach ($satuans as $satuan)
+                          <option 
+                            value="{{ $produk->satuan }}"
+                              @if ($satuan->name === $produk->satuan)
+                                selected
+                              @endif
+                            >
+                            {{$satuan->name}}
+                          </option>
+                        @endforeach
                         </select>
                       </div>
                     </div>
@@ -74,10 +84,16 @@
                       <div class="form-group">
                         <label>Pilih Brand</label>
                         <select class="form-control" name="brand">
-                        <option value="{{$produk->brand}}">{{$produk->brand}}</option>
-                          <option value="MAYBELLINE">MAYBELLINE</option>
-                          <option value="LOREAL MAKE UP">LOREAL MAKE UP</option>
-                          <option value="Lipstick">DEX</option>
+                        @foreach ($brands as $brand)
+                          <option 
+                            value="{{ $produk->brand }}"
+                              @if ($brand->brand_name === $produk->brand)
+                                selected
+                              @endif
+                            >
+                            {{$brand->brand_name}}
+                          </option>
+                        @endforeach
                         </select>
                       </div>
                     </div>
@@ -85,8 +101,16 @@
                       <div class="form-group">
                         <label>Pilih Supplier</label>
                         <select class="form-control" name="supplier">
-                        <option value="{{$produk->supplier}}">{{$produk->supplier}}</option>
-                          <option value="PT.Mensa Bina sukses">PT.Mensa Bina sukses</option>
+                        @foreach ($suppliers as $supplier)
+                          <option 
+                            value="{{ $produk->supplier }}"
+                              @if ($supplier->name === $produk->supplier)
+                                selected
+                              @endif
+                            >
+                            {{$supplier->name}}
+                          </option>
+                        @endforeach
                         </select>
                       </div>
                     </div>
@@ -122,9 +146,7 @@
 
                   <div class="form-group">
                     <label>Deskripsi</label>
-                    <textarea class="form-control" rows="3" placeholder="Deskripsi ..." name="deskripsi">
-                      {{$produk->deskripsi}}
-                    </textarea>
+                    <textarea class="form-control" rows="3" placeholder="Deskripsi ..." name="deskripsi">{{$produk->deskripsi}}</textarea>
                   </div>
 
                   <div class="col-sm-6">
@@ -140,7 +162,7 @@
                   </div>
                   <div class="div col-sm-6">
                     <div class="form-group">
-                      <img src="{{ asset ('storage/img_produk/'.$produk->image) }}" width="100px" height="95px"/>
+                      <img src="{{ asset ('uploads/'.$produk->image) }}" width="100px" height="95px"/>
                     </div>
                   </div>
                 </div>

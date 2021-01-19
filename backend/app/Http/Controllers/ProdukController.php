@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Produk;
 use App\Brand;
+use App\Supplier;
+use App\Satuan;
 use App\Exports\ProdukExport;
 use App\Imports\ProdukImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,13 +22,18 @@ class ProdukController extends Controller
      */
     public function index()
     {
+        $brands = Brand::all();
+        $suppliers = Supplier::all();
+        $satuans = Satuan::all();
+        //return view('produks.index', compact('brands'));
         $produk['listProduk'] = Produk::all();
-        return view('produks.index')->with($produk);
+        return view('produks.index', compact('brands','suppliers','satuans'))
+        ->with($produk);
 
         
         //$brand = Brand::all();
-        $brand = Brand::pluck('brand_name', 'brand_name');
-        return view('produks.index')->with($brand);
+        //$brand = Brand::pluck('brand_name', 'brand_name');
+        //return view('produks.index')->with($brand);
     }
 
     // //data combobox brand
@@ -56,7 +63,8 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        
+        $brands = Brand::all();
+        return view('produks.index', compact('brands'));
     }
 
     /**
@@ -67,21 +75,52 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());die();
 
-        $fileName='';
-        if($request->image->getClientOriginalName()){
-            $file = str_replace(' ', '', $request->image->getClientOriginalName());
-            $fileName = date('ymdHs').rand(1,999).'_'.$file;
-            $request->image->storeAs('public/img_produk', $fileName);
-        }
+        $request->validate([
+            'name' =>  'required',
+            'stok'  =>  'required',
+            'satuan' =>  'required',
+            'category'    =>  'required',
+            'brand'   =>  'required',
+            'supplier'  =>  'required',
+            'harga_beli'   => 'required',
+            'harga_jual'  =>  'required',
+            'harga_sdiskon' => 'required',
+            'diskon'   => 'required',
+            'deskripsi'  =>  'required',
+            'image'   => 'required|image|max:2048',
+        ]);
 
-        $produk = Produk::create(array_merge($request->all(),[
+        //  $fileName='';
+        //  if($request->image->getClientOriginalName()){
+        //      $file = str_replace(' ', '', $request->image->getClientOriginalName());
+        //      $fileName = date('ymdHs').rand(1,999).'_'.$file;
+        //      $request->image->storeAs('public/img_produk', $fileName);
+        //  }
 
-            'image' => $fileName
+        $image = $request->file('image');
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        $image->move('uploads', $new_name);
 
-        ]));
-        return redirect()->route('produk.index')->with('success', 'Data Product Inserted Successfully');
+         $produk = Produk::create(array_merge($request->all(),[
+
+             'image' => $new_name
+
+         ]));
+         return redirect()->route('produk.index')->with('success', 'Data Product Inserted Successfully');
+        // if($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $extension = $file->getClientExtension();
+        //     $filename = time() . "." . $extension;
+        //     $file->move('uploads',$filename);
+        //     $produk->image = $filename;
+        // }else{
+        //     return $request;
+        //     $produk->image = '';
+        // }
+
+        // $produk->save();
+        // return redirect()->route('produk.index')->with('success', 'Data Product Inserted Successfully');
     }
 
     /**
@@ -103,8 +142,11 @@ class ProdukController extends Controller
      */
     public function edit($id)
     {
-        $produk = Produk::find($id);
-        return view('produks.edit', ['produk'=>$produk]);
+        $brands = Brand::all();
+        $suppliers = Supplier::all();
+        $satuans = Satuan::all();
+        $produk = Produk::findOrfail($id);
+        return view('produks.edit', ['produk'=>$produk], compact('brands','suppliers','satuans'));
         //$data = Produk::findOrFail($request->get('id'));
         //echo json_encode($data);
     }
@@ -118,37 +160,67 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fileName='';
-        if($request->image->getClientOriginalName()){
-            $file = str_replace(' ', '', $request->image->getClientOriginalName());
-            $fileName = date('ymdHs').rand(1,999).'_'.$file;
-            $request->image->storeAs('public/img_produk', $fileName);
-            //$request->image->save();
-        }
-        $updateProduk = Produk::find($id);
-        $updateData = $this->validate($request, [
-            'name' =>  'required',
-            'stok'  =>  'required',
-            'satuan' =>  'required',
-            'category'    =>  'required',
-            'brand'   =>  'required',
-            'supplier'  =>  'required',
-            'harga_beli'   => 'required',
-            'harga_jual'  =>  'required',
-            'harga_sdiskon' => 'required',
-            'diskon'   => 'required',
-            'deskripsi'  =>  'required',
-            'image'   => 'required',
-        ]);
+
+         $updateProduk = Produk::find($id);
+         $updateData = $this->validate($request, [
+             'name' =>  'required',
+             'stok'  =>  'required',
+             'satuan' =>  'required',
+             'category'    =>  'required',
+             'brand'   =>  'required',
+             'supplier'  =>  'required',
+             'harga_beli'   => 'required',
+             'harga_jual'  =>  'required',
+             'harga_sdiskon' => 'required',
+             'diskon'   => 'required',
+             'deskripsi'  =>  'required'
+        //     'image'   => 'required|image|max:2048',
+         ]);
         
 
-        //  $updateProduk = Produk::create(array_merge($request->all(),[
+        // $updateProduk->update(array_merge($updateData,['image' => $fileName]));
+        // return redirect()->route('produk.index')->with('success', 'Data Updated Successfully');
 
-        //      'image' => $fileName
+        $image_name = $request->hidden_image;
+        $image_name = '';
+        $image = $request->file('image');
+        if($image != ''){
+            $request->validate([
+                'name' =>  'required',
+                'stok'  =>  'required',
+                'satuan' =>  'required',
+                'category'    =>  'required',
+                'brand'   =>  'required',
+                'supplier'  =>  'required',
+                'harga_beli'   => 'required',
+                'harga_jual'  =>  'required',
+                'harga_sdiskon' => 'required',
+                'diskon'   => 'required',
+                'deskripsi'  =>  'required',
+                'image'   => 'required|image|max:2048'
+            ]);
+            $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move('uploads',$image_name);
+        }else{
+            $request->validate([
+                'name' =>  'required',
+                'stok'  =>  'required',
+                'satuan' =>  'required',
+                'category'    =>  'required',
+                'brand'   =>  'required',
+                'supplier'  =>  'required',
+                'harga_beli'   => 'required',
+                'harga_jual'  =>  'required',
+                'harga_sdiskon' => 'required',
+                'diskon'   => 'required',
+                'deskripsi'  =>  'required'
+            ]);
+        }
 
-        //  ]));
-        $updateProduk->update(array_merge($updateData,['image' => $fileName]));
-        return redirect()->route('produk.index')->with('success', 'Data Updated Successfully');
+        
+         $updateProduk->update(array_merge($updateData,['image' => $image_name]));
+         return redirect()->route('produk.index')->with('success', 'Data Updated Successfully');
+
     }
 
     /**

@@ -30,3 +30,5 @@ Route::post('/importproduk','ProdukController@produkimport')->name('importproduk
 Route::resource('/user', 'UserController');
 Route::resource('/produk', 'ProdukController');
 Route::resource('/brand', 'BrandController');
+Route::resource('/supplier', 'SupplierController');
+Route::resource('/satuan', 'SatuanController');

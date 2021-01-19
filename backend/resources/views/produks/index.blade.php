@@ -41,7 +41,7 @@ th {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Table Produk</h1>
+            <h1 class="m-0 text-dark">Data Produk</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -102,9 +102,9 @@ th {
                           <!-- <td>{{ "Rp.".number_format($data->harga_beli) }}</td> -->
                           <td>{{ "Rp.".number_format($data->harga_jual) }}</td>
                           <td>{{ number_format($data->diskon)." %" }}</td>
-                          <td>{{ $data->deskripsi }}</td>
+                          <td>{{ str_limit($data->deskripsi,50) }}</td>
                           <td>
-                          <img src="{{ asset('storage/img_produk/'.$data->image) }}" width="75px" height="70px"/>
+                          <img src="{{ asset('uploads/'.$data->image) }}" width="75px" height="70px"/>
                           </td>
                           <td>
                           <div class="col-sm-6">
@@ -174,9 +174,12 @@ th {
                       <div class="form-group">
                         <label>Pilih Satuan</label>
                         <select class="form-control" name="satuan">
-                          <option value="-">-</option>
+                          <!-- <option value="-">-</option>
                           <option value="GROSS">GROSS</option>
-                          <option value="GROSS">LUSIN</option>
+                          <option value="GROSS">LUSIN</option> -->
+                          @foreach ($satuans as $satuan)
+                            <option value="{{$satuan->name}}">{{$satuan->name}}</option>
+                          @endforeach
                         </select>
                       </div>
                     </div>
@@ -196,12 +199,14 @@ th {
                       <div class="form-group">
                         <label>Pilih Brand</label>
                         <select class="form-control" name="brand">
-                        <option value="-">-</option>
-                        
+                          <!-- <option value="-">-</option>
                           <option value="WARDAH">WARDAH</option>
                           <option value="MAYBELLINE">MAYBELLINE</option>
                           <option value="LOREAL MAKE UP">LOREAL MAKE UP</option>
-                          <option value="Lipstick">DEX</option>
+                          <option value="Lipstick">DEX</option> -->
+                          @foreach ($brands as $brand)
+                            <option value="{{$brand->brand_name}}">{{$brand->brand_name}}</option>
+                          @endforeach
                         </select>
                       </div>
                     </div>
@@ -209,8 +214,11 @@ th {
                       <div class="form-group">
                         <label>Pilih Supplier</label>
                         <select class="form-control" name="supplier">
-                        <option value="-">-</option>
-                          <option value="PT.Mensa Bina sukses">PT.Mensa Bina sukses</option>
+                          <!-- <option value="-">-</option>
+                          <option value="PT.Mensa Bina sukses">PT.Mensa Bina sukses</option> -->
+                          @foreach ($suppliers as $supplier)
+                            <option value="{{$supplier->name}}">{{$supplier->name}}</option>
+                          @endforeach
                         </select>
                       </div>
                     </div>

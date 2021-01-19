@@ -38,18 +38,28 @@ class BrandController extends Controller
     {
         //dd($request->all());die();
 
-        $fileName='';
-        if($request->image->getClientOriginalName()){
-            $file = str_replace(' ', '', $request->image->getClientOriginalName());
-            $fileName = date('ymdHs').rand(1,999).'_'.$file;
-            $request->image->storeAs('public/img_produk', $fileName);
-        }
+        // $fileName='';
+        // if($request->image->getClientOriginalName()){
+        //     $file = str_replace(' ', '', $request->image->getClientOriginalName());
+        //     $fileName = date('ymdHs').rand(1,999).'_'.$file;
+        //     $request->image->storeAs('public/img_produk', $fileName);
+        // }
+
+        $request->validate([
+            'brand_name' =>  'required',
+            'is_populer'  =>  'required',
+            'image'   => 'required|image|max:2048'
+        ]);
+        $image = $request->file('image');
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+        $image->move('uploads', $new_name);
 
         $brand = Brand::create(array_merge($request->all(),[
 
-            'image' => $fileName
+             'image' => $new_name
 
         ]));
+
         return redirect()->route('brand.index')->with('success', 'Data Product Inserted Successfully');
     }
 
@@ -72,7 +82,7 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
-        $brand = Brand::find($id);
+        $brand = Brand::findOrfail($id);
         return view('brands.edit', ['brand'=>$brand]);
         //$data = Produk::findOrFail($request->get('id'));
         //echo json_encode($data);
@@ -87,12 +97,13 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fileName='';
-        if($request->image->getClientOriginalName()){
-            $file = str_replace(' ', '', $request->image->getClientOriginalName());
-            $fileName = date('ymdHs').rand(1,999).'_'.$file;
-            $request->image->storeAs('public/img_produk', $fileName);
-        }
+        // $fileName='';
+        // if($request->image->getClientOriginalName()){
+        //     $file = str_replace(' ', '', $request->image->getClientOriginalName());
+        //     $fileName = date('ymdHs').rand(1,999).'_'.$file;
+        //     $request->image->storeAs('public/img_produk', $fileName);
+        // }
+
         $updateBrand = Brand::find($id);
         $updateData = $this->validate($request, [
             'brand_name' =>  'required',
@@ -100,13 +111,28 @@ class BrandController extends Controller
             'image'   => 'required',
         ]);
         
+        $image_name = $request->hidden_image;
+        $image_name = '';
+        $image = $request->file('image');
 
-        //  $updateProduk = Produk::create(array_merge($request->all(),[
+        if($image != ''){
+            $request->validate([
+                'brand_name' =>  'required',
+                'is_populer'  =>  'required',
+                'image'   => 'required|image|max:2048'
+            ]);
+            $image_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move('uploads',$image_name);
+        }else{
+            $request->validate([
+                'brand_name' =>  'required',
+                'is_populer'  =>  'required'
+            ]);
+        }
 
-        //      'image' => $fileName
 
-        //  ]));
-        $updateBrand->update(array_merge($updateData,['image' => $fileName]));
+    
+        $updateBrand->update(array_merge($updateData,['image' => $image_name]));
         return redirect()->route('brand.index')->with('success', 'Data Updated Successfully');
     }
 

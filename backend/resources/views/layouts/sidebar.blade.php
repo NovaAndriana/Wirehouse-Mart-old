@@ -49,9 +49,21 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('supplier.index') }}" class="nav-link">
                   <i class="far fa-user nav-icon"></i>
                   <p>Supplier</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('satuan.index') }}" class="nav-link">
+                  <i class="far fa-user nav-icon"></i>
+                  <p>Satuan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-user nav-icon"></i>
+                  <p>Kategori</p>
                 </a>
               </li>
               <li class="nav-item">

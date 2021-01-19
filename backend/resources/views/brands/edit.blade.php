@@ -27,12 +27,10 @@
 
             <div class="card-header">
               <h3 class="card-title">Brand Table</h3>
-              <button style="margin:5px;" type="button" class="btn btn-warning float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-download"></i> Export Data</button>
-              <button style="margin:5px;" type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-import"></i> Import Data</button>
-              <button style="margin:5px;" type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i> Add item</button>
+              <a href="{{ route('brand.index') }}" style="margin:5px;" type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Add item</a>
             </div>
             
-            <form method="POST" action="{{ route('brand.update', $brand->id) }}" role="form" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('brand.update', $brand->id) }}" role="form">
             {{method_field('PUT')}}
                 @csrf
                 <div class="modal-body">
@@ -66,7 +64,7 @@
                   </div>
                   <div class="div col-sm-6">
                     <div class="form-group">
-                      <img src="{{ asset ('storage/img_produk/'.$brand->image) }}" width="100px" height="95px"/>
+                      <img src="{{ asset ('uploads/'.$brand->image) }}" width="100px" height="95px"/>
                     </div>
                   </div>
                 </div>
@@ -74,7 +72,7 @@
 
                 <div class="modal-footer">
                   <input type="hidden" name="id" id="id">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <a href="{{ route('brand.index') }}" type="button" class="btn btn-secondary">Close</a>
                   <button type="submit" class="btn btn-primary">Update</button>
                 </div>
               </form>

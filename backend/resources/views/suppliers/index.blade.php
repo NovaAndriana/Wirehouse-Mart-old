@@ -10,7 +10,24 @@
     overflow: hidden;
     outline:none;
 }
-    </style>
+    
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #76a1da;
+  color: white;
+}
+</style>
 @endsection
 @section('footer')
     <script src="{{asset('inpos/plugins/jquery-datatable/jquery.dataTables.js')}}"></script>
@@ -24,12 +41,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Data Brand</h1>
+            <h1 class="m-0 text-dark">Data Supplier</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Brand</li>
+              <li class="breadcrumb-item active">Supplier</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -45,9 +62,9 @@
           <div class="card">
 
             <div class="card-header">
-              <h3 class="card-title">Brand Table</h3>
-              <!-- <button style="margin:5px;" type="button" class="btn btn-warning float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-download"></i> Export Data</button>
-              <button style="margin:5px;" type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-import"></i> Import Data</button> -->
+              <h3 class="card-title">Supplier Table</h3>
+              <!-- <a href="{{route('exportproduk')}}" style="margin:5px;" type="button" class="btn btn-warning float-right"><i class="fas fa-file-download"></i> Export Data</a>
+              <a style="margin:5px;" type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#Modalimport"><i class="fas fa-file-import"></i> Import Data</a> -->
               <button style="margin:5px;" type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i> Add item</button>
             </div>
             
@@ -58,35 +75,34 @@
                   <tr>
                       <th style="width: 10px">#</th>
                       <th>Nama</th>
-                      <th>Gambar</th>
+                      <th>Contact Person</th>
+                      <th>Email</th>
+                      <th>No Telp</th>
+                      <th>Alamat</th>
                       <th style="width: 40px">Action</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($listBrand as $data)
+                  @foreach($listSupplier as $data)
                       <tr>
                           <td>{{ $data->id }}</td>
-                          <td>{{ $data->brand_name }}</td>
+                          <td>{{ $data->name }}</td>
+                          <td>{{ $data->contact_person }}</td>
+                          <td>{{ $data->email }}</td>
+                          <td>{{ $data->no_telp }}</td>
+                          <td>{{ $data->alamat }}</td>
                           <td>
-                          <img src="{{'uploads/'.$data->image }}" width="75px" height="70px"/>
-                          </td>
-                          <td>
-                          <!-- <a href="{{ $data->id }}">
-                              <i class="fa fa-edit blue" data-toggle="modal" data-target="#exampleModal2"></i>
-                          </a> -->
-                          <a href="{{route('brand.edit', $data->id)}}">
-                            <i class="fa fa-edit blue"></i>
-                          </a>
-                          <!-- <a href="#">
-                              <i class="fa fa-trash red"></i>
-                          </a> -->
-                          <form name="myform" id="myform" style="display: inline;" action="{{route('brand.destroy', $data->id)}}" method="post" onsubmit="return confirm('Are you sure you want to delete {{$data->brand_name}}');">
-                                            {{ method_field('DELETE') }}
-                                            @csrf
-                                            <button type="submit">
-                                                <i class="fa fa-trash red"></i>
-                                            </button>
-                            </form>
+                                  <a href="{{route('supplier.edit', $data->id)}}">
+                                    <i class="fa fa-edit blue"></i>
+                                  </a>
+                                  <form name="myform" id="myform" style="display: inline;" action="{{route('supplier.destroy', $data->id)}}" method="post" onsubmit="return confirm('Are you sure you want to delete {{$data->name}}');">
+                                                    {{ method_field('DELETE') }}
+                                                    @csrf
+                                                    <button type="submit">
+                                                        <i class="fa fa-trash red"></i>
+                                                    </button>
+                                    </form>
+                               
                           </td>
                       </tr>
                   @endforeach
@@ -101,41 +117,49 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Brand</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Supplier</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form method="POST" action="{{ route('brand.store') }}" role="form" enctype="multipart/form-data">
+              <form method="POST" action="{{ route('supplier.store') }}" role="form" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                   <div class="form-group">
-                    <label>Nama Brand</label>
-                    <input type="text" class="form-control" id="brand_name" placeholder="Nama" name="brand_name">
+                    <label>Nama</label>
+                    <input type="text" class="form-control" placeholder="Nama ..." name="name">
                   </div>
                   <div class="row">
                     <div class="col-sm-6">
+                      <!-- text input -->
                       <div class="form-group">
-                        <label>Populer</label>
-                        <select class="form-control" name="is_populer">
-                          <option value="0">-</option>
-                          <option value="1">YA</option>
-                          <option value="0">TIDAK</option>
-                        </select>
+                        <label>Contact Person</label>
+                        <input type="text" class="form-control" placeholder="Contact Person ..." name="contact_person">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Email..." name="email">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>No Telp</label>
+                        <input type="text" class="form-control" placeholder="No Telp / Hp..." name="no_telp">
                       </div>
                     </div>
                   </div>
+
                   <div class="form-group">
-                    <label for="exampleInputFile">File Gambar</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="image">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
+                    <label>Alamat</label>
+                    <textarea class="form-control" rows="3" placeholder="Alamat ..." name="alamat"></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
+
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Tambah</button>
@@ -144,7 +168,6 @@
             </div>
           </div>
         </div>
-
 
       </div><!-- /.container-fluid -->
     </section>

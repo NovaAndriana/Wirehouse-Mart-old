@@ -17,8 +17,8 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::post('login', 'Api\UserController@login');
-Route::post('register', 'Api\UserController@register');
+Route::post('login', 'Api\UserappController@login');
+Route::post('register', 'Api\UserappController@register');
 Route::get('produk', 'Api\ProdukController@index');
 Route::get('produkdiskon', 'Api\ProdukController@produkdiskon');
 Route::get('brandpopuler','Api\BrandController@index');
