@@ -32,3 +32,4 @@ Route::resource('/produk', 'ProdukController');
 Route::resource('/brand', 'BrandController');
 Route::resource('/supplier', 'SupplierController');
 Route::resource('/satuan', 'SatuanController');
+Route::resource('/kategori', 'KategoriController');

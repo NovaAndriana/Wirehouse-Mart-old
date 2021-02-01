@@ -90,7 +90,8 @@ th {
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($listProduk as $data)
+                  @if ($produk->count() > 0)
+                  @foreach($produk as $data)
                       <tr>
                           <td>{{ $data->id }}</td>
                           <td>{{ $data->name }}</td>
@@ -138,8 +139,14 @@ th {
                           </td>
                       </tr>
                   @endforeach
+                  @else
+									<tr>
+										<td>Tidak ada data</td>
+									</tr>
+									@endif
                   </tbody>
               </table>
+              {{ $produk->links() }}
             </div>
             </div>
             <!-- /.card-body -->
@@ -187,11 +194,14 @@ th {
                       <div class="form-group">
                         <label>Pilih Kategori</label>
                         <select class="form-control" name="category">
-                        <option value="-">-</option>
+                        <!-- <option value="-">-</option>
                           <option value="Eye">Eye</option>
                           <option value="Make Up">Make Up</option>
                           <option value="Lipstick">Lipstick</option>
-                          <option value="Skin Care">Skin Care</option>
+                          <option value="Skin Care">Skin Care</option> -->
+                          @foreach ($kategoris as $kategori)
+                            <option value="{{$kategori->name}}">{{$kategori->name}}</option>
+                          @endforeach
                         </select>
                       </div>
                     </div>

@@ -44,25 +44,25 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{ route('brand.index') }}" class="nav-link">
-                  <i class="far fa-flag nav-icon"></i>
+                  <i class="fa fa-flag nav-icon"></i>
                   <p>Brand</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('supplier.index') }}" class="nav-link">
-                  <i class="far fa-user nav-icon"></i>
+                  <i class="fa fa-user nav-icon"></i>
                   <p>Supplier</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('satuan.index') }}" class="nav-link">
-                  <i class="far fa-user nav-icon"></i>
+                  <i class="fa fa-align-right nav-icon"></i>
                   <p>Satuan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-user nav-icon"></i>
+                <a href="{{ route('kategori.index') }}" class="nav-link">
+                  <i class="fa fa-tag nav-icon" aria-hidden="true"></i>
                   <p>Kategori</p>
                 </a>
               </li>
@@ -97,6 +97,18 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-file-image nav-icon"></i>
+                  <p>Sliders Apps Mobile</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-bullhorn nav-icon"></i>
+                  <p>Promo Banner Apps</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Lain-lain</p>
@@ -112,7 +124,7 @@
                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                 <i class="nav-icon fas fa-power-off"></i>
-                {{ __('Logout') }}
+                <p> {{ __('Logout') }} </p>
             </a>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

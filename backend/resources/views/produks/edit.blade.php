@@ -27,8 +27,8 @@
 
             <div class="card-header">
               <h3 class="card-title">Produk Table</h3>
-              <button style="margin:5px;" type="button" class="btn btn-warning float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-download"></i> Export Data</button>
-              <button style="margin:5px;" type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-import"></i> Import Data</button>
+              <!-- <button style="margin:5px;" type="button" class="btn btn-warning float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-download"></i> Export Data</button>
+              <button style="margin:5px;" type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#"><i class="fas fa-file-import"></i> Import Data</button> -->
               <button style="margin:5px;" type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i> Add item</button>
             </div>
             
@@ -51,13 +51,13 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pilih Satuan</label>
-                        <select class="form-control" name="satuan">
+                        <select class="form-control" name="satuan" id="satuan">
                           <!-- <option value="{{$produk->satuan}}">{{$produk->satuan}}</option>
                           <option value="GROSS">GROSS</option>
                           <option value="GROSS">LUSIN</option> -->
                           @foreach ($satuans as $satuan)
                           <option 
-                            value="{{ $produk->satuan }}"
+                            value="{{ $satuan->name }}"
                               @if ($satuan->name === $produk->satuan)
                                 selected
                               @endif
@@ -71,22 +71,32 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pilih Kategori</label>
-                        <select class="form-control" name="category">
-                        <option value="{{$produk->category}}">{{$produk->category}}</option>
+                        <select class="form-control" id="category" name="category">
+                        <!-- <option value="{{$produk->category}}">{{$produk->category}}</option>
                           <option value="Eye">Eye</option>
                           <option value="Make Up">Make Up</option>
                           <option value="Lipstick">Lipstick</option>
-                          <option value="Skin Care">Skin Care</option>
+                          <option value="Skin Care">Skin Care</option> -->
+                          @foreach ($kategoris as $kategori)
+                          <option 
+                            value="{{ $kategori->name }}"
+                              @if ($kategori->name === $produk->category)
+                                selected
+                              @endif
+                            >
+                            {{$kategori->name}}
+                          </option>
+                        @endforeach
                         </select>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pilih Brand</label>
-                        <select class="form-control" name="brand">
+                        <select class="form-control" name="brand" id="brand">
                         @foreach ($brands as $brand)
                           <option 
-                            value="{{ $produk->brand }}"
+                            value="{{ $brand->brand_name }}"
                               @if ($brand->brand_name === $produk->brand)
                                 selected
                               @endif
@@ -100,10 +110,10 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pilih Supplier</label>
-                        <select class="form-control" name="supplier">
+                        <select class="form-control" name="supplier" id="supplier">
                         @foreach ($suppliers as $supplier)
                           <option 
-                            value="{{ $produk->supplier }}"
+                            value="{{ $supplier->name }}"
                               @if ($supplier->name === $produk->supplier)
                                 selected
                               @endif
@@ -148,13 +158,14 @@
                     <label>Deskripsi</label>
                     <textarea class="form-control" rows="3" placeholder="Deskripsi ..." name="deskripsi">{{$produk->deskripsi}}</textarea>
                   </div>
-
+                  
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="exampleInputFile">File Gambar</label>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="exampleInputFile" name="image">
+                          <input type="file" class="custom-file-input" id="image" name="image">
+                          <input name="hidden_image" type="hidden" value="{{$produk->image}}" /> 
                           <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                         </div>
                       </div>
@@ -162,7 +173,7 @@
                   </div>
                   <div class="div col-sm-6">
                     <div class="form-group">
-                      <img src="{{ asset ('uploads/'.$produk->image) }}" width="100px" height="95px"/>
+                      <img src="{{ asset ('uploads/'.$produk->image) }}" width="150px" height="145px"/>
                     </div>
                   </div>
                 </div>

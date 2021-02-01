@@ -6,6 +6,7 @@ use App\Produk;
 use App\Brand;
 use App\Supplier;
 use App\Satuan;
+use App\Kategori;
 use App\Exports\ProdukExport;
 use App\Imports\ProdukImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -25,10 +26,12 @@ class ProdukController extends Controller
         $brands = Brand::all();
         $suppliers = Supplier::all();
         $satuans = Satuan::all();
+        $kategoris = Kategori::all();
         //return view('produks.index', compact('brands'));
-        $produk['listProduk'] = Produk::all();
-        return view('produks.index', compact('brands','suppliers','satuans'))
-        ->with($produk);
+        //$produk['listProduk'] = Produk::all();
+        $produk = Produk::paginate(10);
+        return view('produks.index', compact('produk','brands','suppliers','satuans','kategoris'));
+        //->with($produk);
 
         
         //$brand = Brand::all();
@@ -145,8 +148,9 @@ class ProdukController extends Controller
         $brands = Brand::all();
         $suppliers = Supplier::all();
         $satuans = Satuan::all();
+        $kategoris = Kategori::all();
         $produk = Produk::findOrfail($id);
-        return view('produks.edit', ['produk'=>$produk], compact('brands','suppliers','satuans'));
+        return view('produks.edit', ['produk'=>$produk], compact('brands','suppliers','satuans','kategoris'));
         //$data = Produk::findOrFail($request->get('id'));
         //echo json_encode($data);
     }
@@ -162,63 +166,63 @@ class ProdukController extends Controller
     {
 
          $updateProduk = Produk::find($id);
-         $updateData = $this->validate($request, [
-             'name' =>  'required',
-             'stok'  =>  'required',
-             'satuan' =>  'required',
-             'category'    =>  'required',
-             'brand'   =>  'required',
-             'supplier'  =>  'required',
-             'harga_beli'   => 'required',
-             'harga_jual'  =>  'required',
-             'harga_sdiskon' => 'required',
-             'diskon'   => 'required',
-             'deskripsi'  =>  'required'
-        //     'image'   => 'required|image|max:2048',
-         ]);
+         $image_name = $request->hidden_image;
+         //$image_name = '';
+         $image = $request->file('image');
+         if($image != ''){
+             $request->validate([
+                 'name' =>  'required',
+                 'stok'  =>  'required',
+                 'satuan' =>  'required',
+                 'category'    =>  'required',
+                 'brand'   =>  'required',
+                 'supplier'  =>  'required',
+                 'harga_beli'   => 'required',
+                 'harga_jual'  =>  'required',
+                 'harga_sdiskon' => 'required',
+                 'diskon'   => 'required',
+                 'deskripsi'  =>  'required',
+                 'image'   => 'image|max:2048'
+             ]);
+             $image_name = rand() . '.' . $image->getClientOriginalExtension();
+             $image->move('uploads',$image_name);
+         }else{
+             $request->validate([
+                 'name' =>  'required',
+                 'stok'  =>  'required',
+                 'satuan' =>  'required',
+                 'category'    =>  'required',
+                 'brand'   =>  'required',
+                 'supplier'  =>  'required',
+                 'harga_beli'   => 'required',
+                 'harga_jual'  =>  'required',
+                 'harga_sdiskon' => 'required',
+                 'diskon'   => 'required',
+                 'deskripsi'  =>  'required'
+             ]);
+         }
+         
+         $updateData = array(
+             'name' =>  $request->name,
+             'stok'  =>   $request->stok,
+             'satuan' =>   $request->satuan,
+             'category' =>   $request->category,
+             'brand'   =>   $request->brand,
+             'supplier'  =>   $request->supplier,
+             'harga_beli'   =>  $request->harga_beli,
+             'harga_jual'  =>   $request->harga_jual,
+             'harga_sdiskon' =>  $request->harga_sdiskon,
+             'diskon'   =>  $request->diskon,
+             'deskripsi'  =>   $request->deskripsi,
+             'image'   => $image_name
+         );
         
 
         // $updateProduk->update(array_merge($updateData,['image' => $fileName]));
         // return redirect()->route('produk.index')->with('success', 'Data Updated Successfully');
 
-        $image_name = $request->hidden_image;
-        $image_name = '';
-        $image = $request->file('image');
-        if($image != ''){
-            $request->validate([
-                'name' =>  'required',
-                'stok'  =>  'required',
-                'satuan' =>  'required',
-                'category'    =>  'required',
-                'brand'   =>  'required',
-                'supplier'  =>  'required',
-                'harga_beli'   => 'required',
-                'harga_jual'  =>  'required',
-                'harga_sdiskon' => 'required',
-                'diskon'   => 'required',
-                'deskripsi'  =>  'required',
-                'image'   => 'required|image|max:2048'
-            ]);
-            $image_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move('uploads',$image_name);
-        }else{
-            $request->validate([
-                'name' =>  'required',
-                'stok'  =>  'required',
-                'satuan' =>  'required',
-                'category'    =>  'required',
-                'brand'   =>  'required',
-                'supplier'  =>  'required',
-                'harga_beli'   => 'required',
-                'harga_jual'  =>  'required',
-                'harga_sdiskon' => 'required',
-                'diskon'   => 'required',
-                'deskripsi'  =>  'required'
-            ]);
-        }
-
         
-         $updateProduk->update(array_merge($updateData,['image' => $image_name]));
+         $updateProduk->update($updateData);
          return redirect()->route('produk.index')->with('success', 'Data Updated Successfully');
 
     }
