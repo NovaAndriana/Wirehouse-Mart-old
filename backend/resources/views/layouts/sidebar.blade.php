@@ -49,6 +49,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ route('menu.index') }}" class="nav-link">
+                  <i class="fa fa-user nav-icon"></i>
+                  <p>Menu Apps</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ route('supplier.index') }}" class="nav-link">
                   <i class="fa fa-user nav-icon"></i>
                   <p>Supplier</p>
@@ -86,7 +92,6 @@
               <p>
                 Setting
                 <i class="fas fa-angle-left right"></i>
-            
               </p>
             </a>
             <ul class="nav nav-treeview">

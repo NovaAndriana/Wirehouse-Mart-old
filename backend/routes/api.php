@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 Route::post('login', 'Api\UserappController@login');
 Route::post('register', 'Api\UserappController@register');
 Route::get('produk', 'Api\ProdukController@index');
+Route::get('menu', 'Api\MenuController@index');
 Route::get('produkdiskon', 'Api\ProdukController@produkdiskon');
 Route::get('brandpopuler','Api\BrandController@index');
 Route::get('brandall','Api\BrandController@getbrandall');
