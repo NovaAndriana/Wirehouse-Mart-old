@@ -75,14 +75,17 @@ class TransaksiController extends Controller
          })->get();
 
          foreach ($transaksis as $transaksi){
-            $transaksi->details;
+            $details = $transaksi->details;
+                foreach ($details as $detail){
+                    $detail->produk;
+                }
          }
 
-         if (!empty($transaksi)){
+         if (!empty($transaksis)){
              return response()->json([
                  'success' => 0,
                  'message' => 'Transaksi Berhasil',
-                 'transaksis' => collect($transaksi)
+                 'transaksis' => collect($transaksis)
              ]);
          } else {
              $this->error('Transaksi Gagal');
