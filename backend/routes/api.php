@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 Route::post('login', 'Api\UserappController@login');
 Route::post('register', 'Api\UserappController@register');
+Route::post('checkout', 'Api\TransaksiController@store');
+Route::get('checkout/userapp/{id}', 'Api\TransaksiController@history');
 Route::get('produk', 'Api\ProdukController@index');
 Route::get('menu', 'Api\MenuController@index');
 Route::get('produkdiskon', 'Api\ProdukController@produkdiskon');
