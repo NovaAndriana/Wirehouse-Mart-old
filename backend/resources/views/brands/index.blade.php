@@ -58,6 +58,7 @@
                   <tr>
                       <th style="width: 10px">#</th>
                       <th>Nama</th>
+                      <th>Populer</th>
                       <th>Gambar</th>
                       <th style="width: 40px">Action</th>
                   </tr>
@@ -66,7 +67,10 @@
                   @foreach($listBrand as $data)
                       <tr>
                           <td>{{ $data->id }}</td>
-                          <td>{{ $data->brand_name }}</td>
+                          <td>
+                          {{ $data->brand_name }}
+                          </td>
+                          <td>{{ $data->is_populer }}</td>
                           <td>
                           <img src="{{'uploads/'.$data->image }}" width="75px" height="70px"/>
                           </td>
